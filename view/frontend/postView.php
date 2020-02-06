@@ -9,7 +9,7 @@
             <article>
                 <div class="img-post">
                 </div>
-                <h1><?= htmlspecialchars($post['title']) ?></h1>
+                <h1><?= htmlspecialchars($post['title']) ?>test</h1>
                 <p><time datetime="<?= $post['creation_date']; ?>" pubdate="pubdate"><?= $post['formatted_date']; ?></time> de <?= $post['author']; ?></p>
                 <p><?= strip_tags($post['content']); ?></p>
             </article>

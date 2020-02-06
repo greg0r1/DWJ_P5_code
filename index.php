@@ -1,5 +1,5 @@
 <?php
-require './vendor/autoload.php';
+require_once './vendor/autoload.php';
 
 require 'controller/frontend.php';
 require 'controller/backend.php';
@@ -20,10 +20,14 @@ try {
         } elseif ($_GET['action'] == 'addComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 if (!empty($_POST['author']) && !empty($_POST['comment'])) {
+                    $_POST['author'] = strip_tags($_POST['author']);
+                    $_POST['comment'] = strip_tags($_POST['comment']);
                     session_start();
                     $_SESSION['author'] = $_POST['author'];
 
                     addComment($_GET['id'], $_POST['author'], $_POST['comment']);
+                    $_POST['author'] = strip_tags($_POST['author']);
+                    $_POST['comment'] = strip_tags($_POST['comment']);
                 } else {
                     throw new Exception("Erreur : tous les champs ne sont pas remplis !", 1);
                 }
@@ -51,7 +55,11 @@ try {
         } elseif ($_GET['action'] == 'createPost') {
             createPost();
         } elseif ($_GET['action'] == 'addPost') {
-            addPost();
+            if (isset($_POST['tinymceTitle']) && isset($_POST['tinymceContent'])) {
+                $_POST['tinymceTitle'] = strip_tags($_POST['tinymceTitle']);
+                $_POST['tinymceContent'] = strip_tags($_POST['tinymceContent']);
+                addPost();
+            }
         } elseif ($_GET['action'] == 'adminListPosts') {
             listPostsCRUD();
         } elseif ($_GET['action'] == 'editPost') {

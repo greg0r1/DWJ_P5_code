@@ -35,11 +35,9 @@ function addPost()
 {
     $postManager = new PostManagerBo();
 
-    if (isset($_POST['tinymceTitle']) && isset($_POST['tinymceContent'])) {
-        $postManager->addNewPost();
-        require('./view/backend/home.php');
-        echo '<script>alert(\'Votre billet à bien été ajouté ' . $_COOKIE['nameAdminConnected'] . '\')</script>';
-    }
+    $postManager->addNewPost();
+    require('./view/backend/home.php');
+    echo '<script>alert(\'Votre billet à bien été ajouté ' . $_COOKIE['nameAdminConnected'] . '\')</script>';
 }
 
 function listPostsCRUD()
