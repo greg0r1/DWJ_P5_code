@@ -56,10 +56,6 @@ header>nav {
     max-width: 800px;
 }
 
-#homeMess {
-    padding-top: 3.5rem;
-}
-
 /* Pagination */
 #pagination {
     margin: auto;

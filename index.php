@@ -1,20 +1,8 @@
 <?php
-require 'controller/frontend.php';
-require 'controller/backend.php';
 require_once './vendor/autoload.php';
 
-// Rendu du template
-function loadTwig()
-{
-    $loader = new Twig\Loader\FilesystemLoader('./templates');
-    $twig = new Twig\Environment(
-        $loader,
-        [
-            'cache' => false //__DIR__ . '/tmp'
-        ]
-    );
-    return $twig;
-}
+require 'controller/frontend.php';
+require 'controller/backend.php';
 
 try {
     if (isset($_GET['action'])) {

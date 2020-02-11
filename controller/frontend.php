@@ -5,26 +5,22 @@ use App\frontend\CommentManager;
 
 function listPosts()
 {
-    $twig = loadTwig();
     $postManager = new PostManager();
     // Pagination
     $page = (!empty($_GET['page']) ? $_GET['page'] : 1);
     $limit = 6;
-    $start = ceil(($page - 1) * $limit);
+    $start = ($page - 1) * $limit;
     $number_total_posts = $postManager->paging();
     $number_of_pages = ceil($number_total_posts / $limit);
 
 
     $posts = $postManager->getPosts($limit, $start);
 
-    echo $twig->render('/frontend/listPosts.twig', ['posts' => $posts, 'page' => $page, 'number_of_pages' => $number_of_pages, 'title' => 'Liste des articles']);
-    $posts->closeCursor();
+    require('./view/frontend/listPostsView.php');
 }
 
 function post($postId)
 {
-    $twig = loadTwig();
-
     $postManager = new PostManager();
     $commentManager = new CommentManager();
 
@@ -35,9 +31,7 @@ function post($postId)
     } elseif ($post == false) {
         throw new Exception("Error de récupération du post.", 1);
     } else {
-        echo $twig->render('/frontend/postView.twig', ['post' => $post, 'comment' => $comments, 'title' => $post['title']]);
-        $post->closeCursor();
-        $comments->closeCursor();
+        require('./view/frontend/postView.php');
     }
 }
 

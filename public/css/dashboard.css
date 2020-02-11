@@ -71,9 +71,15 @@ body {
  */
 
 [role="main"] {
-  padding: unset;
-  ;
+  padding-top: 133px;
   /* Space for fixed navbar */
+}
+
+@media (min-width: 768px) {
+  [role="main"] {
+    padding-top: 80px;
+    /* Space for fixed navbar */
+  }
 }
 
 /*
