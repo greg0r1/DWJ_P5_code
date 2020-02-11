@@ -1,0 +1,12 @@
+{% extends '/backend/layout.twig' %}
+
+{% block content %}
+  <div class="container">
+    <h3>Votre billet a bien été ajouté
+      <strong>{{ name }}</strong>
+    </h3>
+    <a class="nav-link" href="index.php?action=adminListPosts">
+      Retour à la liste des billets
+    </a>
+  </div>
+{% endblock %}

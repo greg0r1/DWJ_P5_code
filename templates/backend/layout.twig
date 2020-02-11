@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+  <head>
+    {% block head %}
+      {% include('backend/head.twig') %}
+      <title>
+        {% block title %}
+          {{title}}
+        {% endblock %}
+      </title>
+    {% endblock %}
+  </head>
+
+  <body>
+    <header>
+      {% include('backend/header.twig') %}
+    </header>
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-4" role="main">
+      <h3>{{title}}</h3>
+      {% block content %}{% endblock %}
+    </main>
+    {% include('backend/footer.twig') %}
+  </body>
+</html>

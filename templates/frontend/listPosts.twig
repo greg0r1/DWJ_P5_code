@@ -1,0 +1,66 @@
+{% extends '/frontend/layout.twig' %}
+
+{% block content %}
+  <section id="articles">
+    <div class="container marketing">
+      <div class="row">
+        {% for data in posts %}
+          {% if data is empty %}
+            <h1>Il n'y a pas de billet à afficher!</h1>
+          {% else %}
+            <div class="col-lg-4">
+              <article id="postsList">
+                <div class="img-post"></div>
+                <h2>{{ data.title }}</h2>
+                <p>
+                  <time datetime="{{ data.creation_date }}">{{ data.formatted_date }}</time>
+                  de
+                  <span rel="author">{{ data.author }}</span>
+                </p>
+                <p>{{ data.content | striptags | raw }}</p>
+                <p>
+                  <a class="btn btn-secondary" href="index.php?action=post&amp;id={{ data.id }}" role="button">Voir l'article &raquo;</a>
+                </p>
+              </article>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <!--end Posts -->
+
+    <!-- Paging -->
+    <div id="paging">
+      {% if page > number_of_pages %}
+        <div>
+          <p style="font-size:2rem;margin:50px auto 5px">La page n'existe pas!</p>
+          <p>
+            <a href="index.php">Retour</a>
+          </p>
+        </div>
+      {% else %}
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <li class="page-item">
+              {% if page > 1 %}
+                <a href="index.php?action=listPosts&amp;page={{ page - 1 }}" class="page-link">Précédent</a>
+              {% endif %}
+            </li>
+            {% for key in 1..number_of_pages %}
+              <li class="page-item">
+                <a href="index.php?action=listPosts&amp;page={{ key }}" class="page-link">{{ key }}</a>
+              </li>
+            {% endfor %}
+            <li class=" page-item">
+              {% if page < number_of_pages %}
+                <a href="index.php?action=listPosts&amp;page={{ page + 1 }}" class="page-link">Suivant</a>
+              {% endif %}
+            </li>
+          </ul>
+        </nav>
+      {% endif %}
+    </div>
+    <!-- end paging -->
+  </section>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends '/backend/layout.twig' %}
+
+{% block content %}
+  <h4 class="mb-3">Commentaire n°{{ comment['id'] }}
+    de
+    <strong>{{ comment['author'] }}</strong>
+  </h4>
+  <form id="tinymceForm" action="index.php?action=updateComment&amp;idComment={{ comment['id'] }}" method="post">
+    <div class="col-md-12 mb-3">
+      <label for="tinymceContent">Contenu du commentaire</label>
+      <textarea id="tinymceContent" name="tinymceContent">
+        {{ comment['comment'] }}
+      </textarea>
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <button type="submit" class="btn btn-primary mb-2">Modifier</button>
+          <a href="index.php?action=createPost" class="btn btn-primary mb-2">Effacer</a>
+        </div>
+        <a class="nav-link" href="index.php?action=commentsList">
+          Retour
+        </a>
+      </div>
+    </div>
+  </form>
+{% endblock %}

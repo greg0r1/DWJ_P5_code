@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+  <head>
+    {% block head %}
+      {% include('frontend/head.twig') %}
+      <title>
+        {% block title %}
+          {{title}}
+        {% endblock %}
+      </title>
+    {% endblock %}
+  </head>
+
+  <body>
+    <section id="topSection">
+      <header>
+        {% include('frontend/header.twig') %}
+      </header>
+      {% include('frontend/carousel.twig') %}
+    </section>
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+    {% include('frontend/footer.twig') %}
+  </body>
+</html>

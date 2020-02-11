@@ -4,10 +4,11 @@ use App\backend\Login;
 use App\backend\PostManagerBo;
 use App\backend\CommentManagerBo;
 
-
 function loginForm()
 {
-    require('./view/backend/login.php');
+    $twig = loadTwig();
+
+    echo $twig->render('/backend/login.twig', ['title' => 'Connexion']);
 }
 
 function loginCnx()
@@ -19,29 +20,34 @@ function loginCnx()
 function adminCnx()
 {
     if (isset($_COOKIE['nameAdminConnected'])) {
-        require('./view/backend/home.php');
+        $twig = loadTwig();
+        echo $twig->render('/backend/home.twig', ['title' => 'Accueil - Admin', 'cookieName' => $_COOKIE['nameAdminConnected']]);
     } else {
-        echo '<script>alert("Erreur d\'authentification")</script>';
-        echo '<script>document.location.href="index.php?action=loginForm"</script>';
+        throw new Exception('Erreur d\'authentification', 1);
     }
 }
 
 function createPost()
 {
-    require('./view/backend/createPost.php');
+    $twig = loadTwig();
+    echo $twig->render('/backend/createPost.twig', ['title' => 'Création de post']);
 }
 
 function addPost()
 {
+    $twig = loadTwig();
+
     $postManager = new PostManagerBo();
 
     $postManager->addNewPost();
-    require('./view/backend/home.php');
-    echo '<script>alert(\'Votre billet à bien été ajouté ' . $_COOKIE['nameAdminConnected'] . '\')</script>';
+    $name = $_COOKIE['nameAdminConnected'];
+    echo $twig->render('/backend/addedPost.twig', ['name' => $name]);
 }
 
 function listPostsCRUD()
 {
+    $twig = loadTwig();
+
     $postManager = new PostManagerBo();
 
     // Pagination
@@ -51,38 +57,46 @@ function listPostsCRUD()
     $number_total_posts = $postManager->paging();
     $number_of_pages = ceil($number_total_posts / $limit);
 
-
     $posts = $postManager->getPostsCRUD($limit, $start);
 
-    require('./view/backend/listPosts.php');
+    echo $twig->render('/backend/listPosts.twig', ['posts' => $posts, 'page' => $page, 'number_of_pages' => $number_of_pages, 'number_total_posts' => $number_total_posts, 'title' => 'Gestionnaire de Billets']);
+    $posts->closeCursor();
 }
 
 function editPost($postId)
 {
+    $twig = loadTwig();
+
     $postManager = new PostManagerBo();
 
     $post = $postManager->modifyPostCRUD($postId);
-    require('./view/backend/editPost.php');
+    echo $twig->render('/backend/editPost.twig', ['post' => $post, 'title' => 'Modification du billet']);
 }
 
 function updatePost($idPost, $title, $content)
 {
+    $twig = loadTwig();
+
     $postManager = new PostManagerBo();
 
     $postManager->updatingPost($idPost, $title, $content);
-    require('./view/backend/updatedPost.php');
+    echo $twig->render('/backend/updatedPost.twig', ['idPost' => $idPost]);
 }
 
 function deletingPost($idPost)
 {
+    $twig = loadTwig();
+
     $postManager = new PostManagerBo();
 
     $postManager->deletePost($idPost);
-    require('./view/backend/deletedPost.php');
+    echo $twig->render('/backend/deletedPost.twig', ['idPost' => $idPost]);
 }
 
 function listCommentsCRUD()
 {
+    $twig = loadTwig();
+
     $commentManager = new CommentManagerBo();
 
     // Pagination
@@ -97,28 +111,35 @@ function listCommentsCRUD()
     if ($comments == false) {
         throw new Exception("Erreur: Les commentaires n'ont pas été récupérés.", 1);
     } else {
-        require('./view/backend/listComments.php');
+        echo $twig->render('/backend/listComments.twig', ['comments' => $comments, 'page' => $page, 'number_total_comments' => $number_total_comments, 'number_of_pages' => $number_of_pages, 'title' => 'Gestionnaire de commentaires']);
+        $comments->closeCursor();
     }
 }
 
 function editComment($commentId)
 {
+    $twig = loadTwig();
+
     $commentManager = new CommentManagerBo();
 
     $comment = $commentManager->modifyCommentCRUD($commentId);
-    require('./view/backend/editComment.php');
+    echo $twig->render('/backend/editComment.twig', ['comment' => $comment, 'title' => 'Modification du commentaire']);
 }
 
 function updateComment($idComment, $comment)
 {
+    $twig = loadTwig();
+
     $commentManager = new CommentManagerBo();
 
     $commentManager->updatingComment($idComment, $comment);
-    require('./view/backend/updatedComment.php');
+    echo $twig->render('/backend/updatedComment.twig', ['idComment' => $idComment]);
 }
 
 function reportedCommentsListCRUD()
 {
+    $twig = loadTwig();
+
     $commentManager = new CommentManagerBo();
 
     // Pagination
@@ -133,19 +154,22 @@ function reportedCommentsListCRUD()
     if ($comments == false) {
         throw new Exception("Erreur: Les commentaires signalés n'ont pas été récupérés.", 1);
     } else {
-        require('./view/backend/reportedCommentsList.php');
+        echo $twig->render('/backend/reportedCommentsList.twig', ['comments' => $comments, 'page' => $page, 'number_total_comments' => $number_total_comments, 'number_of_pages' => $number_of_pages, 'title' => 'Gestionnaire de commentaires reportés']);
+        $comments->closeCursor();
     }
 }
 
 function deletingComment($idComment)
 {
+    $twig = loadTwig();
+
     $commentManager = new CommentManagerBo();
 
     $deleteComment = $commentManager->deleteComment($idComment);
     if ($deleteComment == false) {
         throw new Exception("Erreur: le commentaire n'a pas été supprimé.", 1);
     } else {
-        require('./view/backend/deletedComment.php');
+        echo $twig->render('/backend/deletedComment.twig', ['idComment' => $idComment]);
         $deleteComment->closeCursor();
     }
 }

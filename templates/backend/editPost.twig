@@ -1,0 +1,29 @@
+{% extends '/backend/layout.twig' %}
+
+{% block content %}
+  <h4 class="mb-3">Commentaire n°{{ post['id'] }}
+    de
+    <strong>{{ post['author'] }}</strong>
+  </h4>
+  <form id="tinymceForm" action="index.php?action=updatePost&amp;idPost={{ post['id'] }}" method="post">
+    <div class="col-md-12 mb-3">
+      <label for="tinymceTitle">Titre du billet</label>
+      <input type="text" class="form-control" name="tinymceTitle" id="tinymceTitle" placeholder="" value="{{ post['title'] }}" required="required">
+      <div class="invalid-feedback">
+        Veuillez saisir un titre pour ce billet.
+      </div>
+      <textarea id="tinymceContent" name="tinymceContent">
+        {{ post['content'] }}
+      </textarea>
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <button type="submit" class="btn btn-primary mb-2">Modifier</button>
+          <a href="index.php?action=createPost" class="btn btn-primary mb-2">Effacer</a>
+        </div>
+        <a class="nav-link" href="index.php?action=adminListPosts">
+          Retour
+        </a>
+      </div>
+    </div>
+  </form>
+{% endblock %}

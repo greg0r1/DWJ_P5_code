@@ -1,0 +1,83 @@
+{% extends '/backend/layout.twig' %}
+
+{% block content %}
+  <div>
+    <div class="table-wrapper">
+      <div class="table-title">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>Comments Manager
+            </h2>
+          </div>
+        </div>
+      </div>
+      <table id="listPostsCRUD" class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Identifiant du billet</th>
+            <th>Auteur</th>
+            <th>Contenu du commentaire</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% set number0fElements = 0 %}
+
+          {% for data in comments %}
+            {% if data is empty %}
+              <p>Il n'y a pas de billet à afficher!</p>
+            {% else %}
+              {% set number0fElements = number0fElements + 1 %}
+              <tr>
+                <td>{{ data['id'] }}</td>
+                <td>
+                  <a href="index.php?action=editPost&amp;id={{ data['post_id'] }}">{{ data['post_id'] }}</a>
+                </td>
+                <td>{{ data['author'] | striptags | raw }}</td>
+                <td>{{ data['comment'] | striptags | raw }}</td>
+                <td>{{ data['comment_date_format'] | striptags | raw  }}</td>
+                <td>
+                  <a href="index.php?action=editComment&amp;id={{ data['id'] }}" class="edit" title="Modifier">
+                    <i class="material-icons"></i>
+                  </a>
+                  <a href="index.php?action=deleteComment&amp;idComment={{ data['id'] }}" class="delete" title="Supprimer" onclick="return deleteDialog()">
+                    <i class="material-icons"></i>
+                  </a>
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="clearfix">
+        <div class="hint-text">Affichage de
+          <b>{{ number0fElements }}</b>
+          entrées sur
+          <b>{{ number_total_comments }}</b>
+        </div>
+        <ul class="pagination">
+          <li class="page-item">
+            {% if page > 1 %}
+              <a href="index.php?action=commentsList&amp;page={{ page - 1 }}" class="page-link">Précédent</a>
+            {% endif %}
+          </li>
+          {% for key in 1..number_of_pages %}
+            <li class="page-item">
+              <a href="index.php?action=commentsList&amp;page={{ key }}" class="page-link">{{ key }}</a>
+            </li>
+          {% endfor %}
+          <li class="page-item">
+            {% if page < number_of_pages %}
+              <a href="index.php?action=commentsList&amp;page={{ page + 1 }}" class="page-link">Suivant</a>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <a class="nav-link" href="index.php?action=adminCnx">
+      Retour
+    </a>
+  </div>
+{% endblock %}

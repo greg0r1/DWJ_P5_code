@@ -1,0 +1,76 @@
+{% extends '/frontend/layout.twig' %}
+
+{% block content %}
+  <section id="article">
+    <div class="container">
+      <div class="news">
+        <article>
+          <div class="img-post"></div>
+          <h1>{{ post.title }}</h1>
+          <p>
+            <time datetime="{{ post.formatted_date }}">{{ post.formatted_date }}</time>
+            de
+            {{ post.author }}</p>
+          <p>{{ post.content | striptags | raw }}</p>
+        </article>
+      </div>
+
+      <div id="commentaires">
+        <h3>Commentaires
+        </h3>
+        {% for data in comment %}
+          <ul id="commentaires">
+            <li>
+              <article id="commentPost">
+                <p>
+                  <span rel="author">{{ data.author }}</span>
+                  <time pubdate="pubdate" datetime="{{ data.comment_date }}">{{ data.comment_date_formatted }}</time>
+                </p>
+                <p>{{ data.comment }}</p>
+              </article>
+              <form id="reportedCommentForm" action="index.php?action=reportedComment&amp;commentId={{ data.id }}&amp;postId={{ post.id }}" method="post">
+                <div class="col-auto">
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" name="reported" id="autoSizingCheck">
+                    <label class="form-check-label" for="autoSizingCheck">
+                      Signaler ce commentaire
+                    </label>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mb-2">Envoyer</button>
+                </div>
+              </form>
+            </li>
+          </ul>
+        {% endfor %}
+        <form id="addComment" action="index.php?action=addComment&amp;id={{ post.id }}" method="POST">
+          <p>
+            <label for="author">Pseudo</label>
+          </p>
+          <p>
+            {% if _SESSION['author'] is defined %}
+              <input type="text" name="author" id="author" value="{{ _SESSION['author'] }}"/>
+            {% else %}
+              <input type="text" name="author" id="author" value=""/>
+            {% endif %}
+            <p>
+              <label for="comment">message</label>
+            </p>
+          </p>
+          <p>
+            <textarea name="comment" id="comment" cols="60" rows="2"></textarea>
+          </p>
+          <p>
+            <input type="submit" class="btn btn-lg btn-primary" value="Envoyer">
+            <input type="reset" class="btn btn-lg btn-primary" value="Effacer">
+          </p>
+        </form>
+      </div>
+
+      <div id="retour_commentaires">
+        <a href="index.php?action=listPosts" class="btn btn-secondary">Retour à la liste des billets</a>
+      </div>
+    </div>
+  </section>
+{% endblock %}
